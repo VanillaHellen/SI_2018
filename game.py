@@ -12,6 +12,14 @@ grateX = 0
 grateY = 0
 clock = pygame.time.Clock()
 
+
+class Trash:
+    def f(self):
+        return 'thats us'
+
+print(Trash.f)
+
+
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
