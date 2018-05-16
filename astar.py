@@ -85,49 +85,39 @@ class Node:
             node = node.parent
         return list(reversed(path_back))
 
+########################################################################################################################
 
-def best_first_search(problem, f):
 
-    closedSet = set()
-
+def best_first_graph_search(problem, f):
+    explored = set()
     current = Node(problem.initial)
+    frontier = PriorityQueue('min', f)
+    frontier.append(current)
 
-    openSet = PriorityQueue('min', f)
-    openSet.append(current)
-
-    while openSet:
-
-        current = openSet.pop()
+    while frontier:
+        current = frontier.pop()
         if problem.goal_test(current.state):
             return current
-
-        closedSet.add(current.state)
+        explored.add(current.state)
 
         for child in current.expand(problem):
-
-            if child.state not in closedSet and child not in openSet:
-                openSet.append(child)
-            elif child in openSet:
-
-                current_path = openSet[child]
-
-                tentative_score = f(current_path)
-                score = f(child)
-
-                if tentative_score >= score:
-                    del openSet[current_path]
-                    openSet.append(child)
+            if child.state not in explored and child not in frontier:
+                frontier.append(child)
+            elif child in frontier:
+                current_path = frontier[child]
+                if f(current_path) >= f(child):
+                    del frontier[current_path]
+                    frontier.append(child)
 
     return None
 
 
 def astar_search(problem):
-
     heuristic = problem.heuristic
-    function = lambda n: n.path_cost + heuristic(n)
 
-    return best_first_search(problem, function)
+    return best_first_graph_search(problem, lambda n: n.path_cost + heuristic(n))
 
+########################################################################################################################
 
 class Plan_Route(Problem):
 
