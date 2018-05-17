@@ -85,46 +85,56 @@ class Node:
             node = node.parent
         return list(reversed(path_back))
 
-########################################################################################################################
 
+def best_first_search(problem, f):
 
-def best_first_graph_search(problem, f):
-    explored = set()
+    closedSet = set()
+
     current = Node(problem.initial)
-    frontier = PriorityQueue('min', f)
-    frontier.append(current)
 
-    while frontier:
-        current = frontier.pop()
+    openSet = PriorityQueue('min', f)
+    openSet.append(current)
+
+    while openSet:
+
+        current = openSet.pop()
         if problem.goal_test(current.state):
             return current
-        explored.add(current.state)
+
+        closedSet.add(current.state)
 
         for child in current.expand(problem):
-            if child.state not in explored and child not in frontier:
-                frontier.append(child)
-            elif child in frontier:
-                current_path = frontier[child]
-                if f(current_path) >= f(child):
-                    del frontier[current_path]
-                    frontier.append(child)
+
+            if child.state not in closedSet and child not in openSet:
+                openSet.append(child)
+            elif child in openSet:
+
+                current_path = openSet[child]
+
+                tentative_score = f(current_path)
+                score = f(child)
+
+                if tentative_score >= score:
+                    del openSet[current_path]
+                    openSet.append(child)
 
     return None
 
 
 def astar_search(problem):
+
     heuristic = problem.heuristic
+    function = lambda n: n.path_cost + heuristic(n)
 
-    return best_first_graph_search(problem, lambda n: n.path_cost + heuristic(n))
+    return best_first_search(problem, function)
 
-########################################################################################################################
 
 class Plan_Route(Problem):
 
-    def __init__(self, initial, goal, walls):
+    def __init__(self, initial, goal, roads):
 
         Problem.__init__(self, initial, goal)
-        self.walls = walls
+        self.roads = roads
 
         self.x_size = 20
         self.y_size = 20
@@ -164,7 +174,7 @@ class Plan_Route(Problem):
         else:
             raise Exception('InvalidAction')
 
-        if proposed_loc in self.walls:
+        if proposed_loc in self.roads:
             state = proposed_loc
 
         return state
