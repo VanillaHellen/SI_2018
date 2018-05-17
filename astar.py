@@ -136,8 +136,8 @@ class Plan_Route(Problem):
         Problem.__init__(self, initial, goal)
         self.roads = roads
 
-        self.x_size = 20
-        self.y_size = 20
+        self.x_size = 25
+        self.y_size = 17
 
     def actions(self, state):
 
