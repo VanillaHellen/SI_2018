@@ -18,7 +18,8 @@ tilemap uses astar algorithm to find the shortest way from start_point to final_
 the way might be defined only on road tiles
 
 the truck movement is animated and it stops after reaching the destination,
-pressing ENTER will yeet the truck anew (replaying the last route)
+pressing ENTER will yeet the truck anew (replaying the last route).
+
 you can set the new destination for the truck by clicking the mouse button (if the non-road tile is clicked, nothing happens)
 
 ## game.py (old map)
