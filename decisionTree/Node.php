@@ -13,6 +13,10 @@ class Node
 
     public function display($level)
     {
+        if($level == 0) {
+            var_dump(json_encode($this->namedBranches ) );
+        }
+
         echo $this->value . "\n";
         foreach ($this->namedBranches as $b => $child_node) {
             echo str_repeat(" ", ($level + 1) * 4) . str_repeat("-", 14 / 2 - strlen($b) / 2) . $b . str_repeat("-", 14 / 2 - strlen($b) / 2) . ">";

@@ -15,39 +15,6 @@ class DecisionTree extends Tree
         $this->find_root($this->root, 'Any', $this->training_data);
     }
 
-    public function predict_outcome($data_file)
-    {
-        $this->input_data = $this->csv_to_array($data_file);
-        $data = $this->input_data['samples'];
-//        $header = $this->input_data['header'];
-        foreach ($data as $k => $row) {
-            $row['result'] = $this->predict($this->root, $row);
-            $data[$k] = $row;
-        }
-        echo "\n";
-        print_r($data);
-    }
-
-    private function predict($node, $data_row)
-    {
-        //we have reached a leaf node
-        if (!count($node->namedBranches)) {
-            print_r("\nReturning " . $node->value . "\n" . "\n");
-            return $node->value;
-        }
-        if (array_key_exists($node->value, $data_row)) {
-            print_r("\nValue of " . $node->value . " is " . $data_row[$node->value]);
-            if (array_key_exists($data_row[$node->value], $node->namedBranches)) {
-                print_r("\nBranch " . $data_row[$node->value] . " exists and leads to node " . $node->namedBranches[$data_row[$node->value]]->value);
-                $next_node = $node->namedBranches[$data_row[$node->value]];
-                return ($this->predict($next_node, $data_row));
-            }
-        }
-        print_r("\nInvalid path");
-        return null;
-    }
-
-
     private function find_root($parent_node, $branch_name, $training_data)
     {
         if ($parent_node->value == 'Root') {
@@ -187,7 +154,7 @@ class DecisionTree extends Tree
                 $p['yes'] /= $total;
                 $p['no'] /= $total;
             } else {
-                die("You are dividing by ZERO, idiot!");
+                die("Dividing by zero!");
             }
         } catch (Exception $e) {
             die("\n" . $e->getMessage());
@@ -220,6 +187,38 @@ class DecisionTree extends Tree
         $new_data['samples'] = $new_samples;
         return ($new_data);
     }
+
+//    public function predict_outcome($data_file)
+//    {
+//        $this->input_data = $this->csv_to_array($data_file);
+//        $data = $this->input_data['samples'];
+////        $header = $this->input_data['header'];
+//        foreach ($data as $k => $row) {
+//            $row['result'] = $this->predict($this->root, $row);
+//            $data[$k] = $row;
+//        }
+//        echo "\n";
+//        print_r($data);
+//    }
+
+//    private function predict($node, $data_row)
+//    {
+//        //we have reached a leaf node
+//        if (!count($node->namedBranches)) {
+//            print_r("\nReturning " . $node->value . "\n" . "\n");
+//            return $node->value;
+//        }
+//        if (array_key_exists($node->value, $data_row)) {
+//            print_r("\nValue of " . $node->value . " is " . $data_row[$node->value]);
+//            if (array_key_exists($data_row[$node->value], $node->namedBranches)) {
+//                print_r("\nBranch " . $data_row[$node->value] . " exists and leads to node " . $node->namedBranches[$data_row[$node->value]]->value);
+//                $next_node = $node->namedBranches[$data_row[$node->value]];
+//                return ($this->predict($next_node, $data_row));
+//            }
+//        }
+//        print_r("\nInvalid path");
+//        return null;
+//    }
 
 
     private function csv_to_array($filename = '', $delimiter = ',')
