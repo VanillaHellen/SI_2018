@@ -179,6 +179,7 @@ while True:
                     for row in typeOfTrashes:
                         isItWorthTaking = [[truckType, getGarbageType(row), 0.0, 0.0, 0.0, 0.0]]
                         if isItWorthTaking is 'yes':
+                            # TRUCK = pygame.image.load('truckWithGarbage.png')
                             break
 
                     predictedDecision = predictDecision(decisionTree, isItWorthTaking)  # prints recognised trash
