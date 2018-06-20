@@ -121,6 +121,12 @@ def getGarbageType(x):
     }.get(x, 0.2)
 
 
+def getArrayOfGarbageTypes(array):
+    for i, s in enumerate(array):
+        a[i] = getGarbageType(s)
+    return a
+
+
 # garbage truck
 TRUCK = pygame.image.load('truck.png')
 TRUCKpos = list(start_point)
@@ -174,7 +180,7 @@ while True:
 
                     garbageType = getGarbageType(typeOfTrashes[0])
                     print(truckType)
-                    print(garbageType)
+                    print(typeOfTrashes)
                     isItWorthTaking = ['no']
                     for row in typeOfTrashes:
                         isItWorthTaking = [[truckType, getGarbageType(row), 0.0, 0.0, 0.0, 0.0]]
@@ -185,6 +191,6 @@ while True:
                     predictedDecision = predictDecision(decisionTree, isItWorthTaking)  # prints recognised trash
                     print(predictedDecision)
 
-        ###########
-        pygame.display.update()
-        time.sleep(0.1)
+            ###########
+            pygame.display.update()
+            time.sleep(0.1)
