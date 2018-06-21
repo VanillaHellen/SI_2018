@@ -189,7 +189,7 @@ while True:
             DISPLAY.blit(TRUCK, (TRUCKpos[0] * TILESIZE, TRUCKpos[1] * TILESIZE))
 
             print(TRUCKpos[0], TRUCKpos[1])
-            if TRUCKpos[0] > 12:
+            if TRUCKpos[0] > 12 and TRUCKpos[1] is 15:
                 TRUCK = pygame.image.load('truck.png')
 
             ########### trash recognition
