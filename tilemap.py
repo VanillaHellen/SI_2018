@@ -2,10 +2,13 @@ import pygame, sys
 import random
 import time
 import random
+import imghdr
+import os
 from pygame.locals import *
 from astar import *
 from dtree import *
 from decisionTreeIfTakeGrbage import *
+from neural import *
 
 # constants
 G = 0  # GRASS
@@ -61,6 +64,20 @@ for w in range(0, 24):
         if (tilemap[h][w] == 1):
             ROADS.append((w, h))
 print(ROADS)
+
+# load all images for houseplates folder
+img = []
+for dirpath, dirnames, filenames in os.walk('houseplates/'):
+    for filename in filenames:
+        file_path = os.path.join(dirpath, filename)
+        if imghdr.what(file_path):
+            #img = [ [image object, filepath], [image object2, filepath2], etc. ]
+            img.append([pygame.transform.scale(pygame.image.load(file_path), (200, 200)),file_path])
+#randomize the order of the plates
+random.shuffle(img)
+#get predictions (the program works faster when you do it once at the beginning)
+prediction = test(img)
+
 
 # [[(house), [color, transparency, smell, elastic, other, dirt, size, weight, sound, reflectiveness]]]
 DUMPSTERS = [
@@ -178,6 +195,9 @@ while True:
             ########### trash recognition
             for i in range(0, 6):
                 if (DUMPSTERS[i][0] == (TRUCKpos[0], TRUCKpos[1])):
+                    DISPLAY.blit(img[i][0], (0, 0)) #displays house plate in the upper left corner
+                    print("Predicted number: " + prediction[i]) #prints prediction
+
                     print(DUMPSTERS[i][1])  # prints data array
                     a = DUMPSTERS[i][1]
                     typeOfTrashes = predictTypeOfTrash(t, a)  # prints recognised trash
